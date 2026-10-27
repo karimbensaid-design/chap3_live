@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="K. Bensaid">
+<meta name="dcterms.date" content="2026-10-27">
+
+<title>Statistiques Avancées et Rédaction Scientifique</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="chap3_riche_files/libs/clipboard/clipboard.min.js"></script>
+<script src="chap3_riche_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="chap3_riche_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="chap3_riche_files/libs/quarto-html/popper.min.js"></script>
+<script src="chap3_riche_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="chap3_riche_files/libs/quarto-html/anchor.min.js"></script>
+<link href="chap3_riche_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="chap3_riche_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="chap3_riche_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="chap3_riche_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="chap3_riche_files/libs/bootstrap/bootstrap-62e2d20df198e8a01bb734742f2e28cf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="chap3_riche_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="chap3_riche_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script type="module" src="chap3_riche_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="chap3_riche_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#part-1-glossaire-méthodologique-pour-la-publication" id="toc-part-1-glossaire-méthodologique-pour-la-publication" class="nav-link" data-scroll-target="#part-1-glossaire-méthodologique-pour-la-publication">Part 1 : Glossaire Méthodologique pour la Publication</a></li>
+  <li><a href="#part-2-cas-pratique-1---p-value-ic-et-taille-de-leffet" id="toc-part-2-cas-pratique-1---p-value-ic-et-taille-de-leffet" class="nav-link" data-scroll-target="#part-2-cas-pratique-1---p-value-ic-et-taille-de-leffet">Part 2 : Cas Pratique 1 - <span class="math inline">\(p\)</span>-value, IC et Taille de l’effet</a>
+  <ul class="collapse">
+  <li><a href="#contexte-industriel" id="toc-contexte-industriel" class="nav-link" data-scroll-target="#contexte-industriel">Contexte Industriel</a></li>
+  <li><a href="#exercice-interactif-r-base-webr" id="toc-exercice-interactif-r-base-webr" class="nav-link" data-scroll-target="#exercice-interactif-r-base-webr">Exercice Interactif (R Base &amp; WebR)</a></li>
+  <li><a href="#guide-dintégration-dans-votre-rédaction" id="toc-guide-dintégration-dans-votre-rédaction" class="nav-link" data-scroll-target="#guide-dintégration-dans-votre-rédaction">Guide d’intégration dans votre Rédaction</a></li>
+  </ul></li>
+  <li><a href="#part-3-cas-pratique-2---anova-multiplicité-et-lettres-compactes-cld" id="toc-part-3-cas-pratique-2---anova-multiplicité-et-lettres-compactes-cld" class="nav-link" data-scroll-target="#part-3-cas-pratique-2---anova-multiplicité-et-lettres-compactes-cld">Part 3 : Cas Pratique 2 - ANOVA, Multiplicité et Lettres Compactes (CLD)</a>
+  <ul class="collapse">
+  <li><a href="#contexte-industriel-1" id="toc-contexte-industriel-1" class="nav-link" data-scroll-target="#contexte-industriel-1">Contexte Industriel</a></li>
+  <li><a href="#script-interactif-avancé-webr" id="toc-script-interactif-avancé-webr" class="nav-link" data-scroll-target="#script-interactif-avancé-webr">Script Interactif Avancé (WebR)</a></li>
+  <li><a href="#guide-dintégration-dans-votre-rédaction-1" id="toc-guide-dintégration-dans-votre-rédaction-1" class="nav-link" data-scroll-target="#guide-dintégration-dans-votre-rédaction-1">Guide d’intégration dans votre Rédaction</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistiques Avancées et Rédaction Scientifique</h1>
+<p class="subtitle lead">Interprétation et Reporting en Microbiologie Industrielle</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>K. Bensaid </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 27, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>En microbiologie industrielle, la production de données (cinétiques, rendements, titres de bio-produits) exige une analyse statistique rigoureuse. L’objectif de ce module interactif est de comprendre la signification réelle de la <strong>p-value</strong>, de la <strong>taille de l’effet</strong>, des <strong>intervalles de confiance</strong> et des <strong>lettres compactes (CLD)</strong>, tout en apprenant à les intégrer correctement dans un document scientifique (article, thèse ou mémoire).</p>
+<hr>
+</section>
+<section id="part-1-glossaire-méthodologique-pour-la-publication" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-glossaire-méthodologique-pour-la-publication">Part 1 : Glossaire Méthodologique pour la Publication</h2>
+<p>Avant de manipuler les scripts, définissons précisément la portée de chaque indicateur statistique selon les exigences des comités de lecture internationaux.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Élément Statistique</th>
+<th>Ce qu’il signifie réellement</th>
+<th>Erreur fréquente de rédaction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p\)</span>-value</td>
+<td>La probabilité d’obtenir un résultat au moins aussi extrême que celui observé, sous l’hypothèse nulle (<span class="math inline">\(H_0\)</span>).</td>
+<td>Croire qu’une petite <span class="math inline">\(p\)</span>-value signifie que l’effet est biologiquement “grand” ou “important”.</td>
+</tr>
+<tr class="even">
+<td><strong>Intervalle de Confiance (IC)</strong></td>
+<td>L’intervalle qui a une probabilité définie (souvent 95%) de contenir la vraie valeur du paramètre de la population.</td>
+<td>Le confondre avec l’écart-type, qui mesure la dispersion des données individuelles.</td>
+</tr>
+<tr class="odd">
+<td><strong>Taille de l’effet</strong></td>
+<td>Une mesure standardisée de la magnitude/force d’un effet biologique (ex: <span class="math inline">\(d\)</span> de Cohen, <span class="math inline">\(R^2\)</span>).</td>
+<td>Omettre cet indicateur, rendant l’interprétation dépendante uniquement de la taille de l’échantillon.</td>
+</tr>
+<tr class="even">
+<td><strong>Lettres Compactes (CLD)</strong></td>
+<td>Un système graphique de regroupement post-hoc codifiant l’absence de différence significative entre les moyennes.</td>
+<td>Croire que deux groupes partagent une lettre parce que leurs moyennes sont mathématiquement identiques.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="part-2-cas-pratique-1---p-value-ic-et-taille-de-leffet" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-cas-pratique-1---p-value-ic-et-taille-de-leffet">Part 2 : Cas Pratique 1 - <span class="math inline">\(p\)</span>-value, IC et Taille de l’effet</h2>
+<section id="contexte-industriel" class="level3">
+<h3 class="anchored" data-anchor-id="contexte-industriel">Contexte Industriel</h3>
+<p>Dans une unité de production de bioéthanol à partir de <em>Saccharomyces cerevisiae</em>, l’équipe R&amp;D teste une variante de pré-culture (<span class="math inline">\(T_1\)</span>) face au témoin industriel (<span class="math inline">\(T_0\)</span>). L’objectif est de vérifier si le rendement (<span class="math inline">\(g\text{ d'éthanol}/g\text{ de glucose}\)</span>) augmente de manière stable sur 12 batchs indépendants par traitement.</p>
+</section>
+<section id="exercice-interactif-r-base-webr" class="level3">
+<h3 class="anchored" data-anchor-id="exercice-interactif-r-base-webr">Exercice Interactif (R Base &amp; WebR)</h3>
+<p>Modifiez le script ci-dessous si vous souhaitez tester l’impact d’une augmentation de la variabilité (en modifiant les valeurs numériques) puis cliquez sur <strong>“Run Code”</strong>.</p>
+<div class="cell" data-edit="true">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyAxLiBKZXV4IGRlIGRvbm7DqWVzIGRlcyByZW5kZW1lbnRzIChnL2cpXG50ZW1vaW5fVDAgPC0gYygwLjQxLCAwLjQzLCAwLjM5LCAwLjQyLCAwLjQwLCAwLjQxLCAwLjM4LCAwLjQzLCAwLjQxLCAwLjQyLCAwLjM5LCAwLjQxKVxudGVzdF9UMSAgIDwtIGMoMC40NiwgMC40NSwgMC40NCwgMC40NywgMC40NSwgMC40NiwgMC40MywgMC40OCwgMC40NSwgMC40NiwgMC40NCwgMC40NSlcblxuIyAyLiBBcHBsaWNhdGlvbiBkdSB0LXRlc3QgZGUgU3R1ZGVudCBwb3VyIMOpY2hhbnRpbGxvbnMgaW5kw6lwZW5kYW50c1xucmVzdWx0YXRzX3R0ZXN0IDwtIHQudGVzdCh0ZXN0X1QxLCB0ZW1vaW5fVDAsIHZhci5lcXVhbCA9IFRSVUUpXG5wcmludChyZXN1bHRhdHNfdHRlc3QpXG5cbiMgMy4gQ2FsY3VsIG1hbnVlbCBkZSBsYSB0YWlsbGUgZGUgbCdlZmZldCAoZCBkZSBDb2hlbilcbm1veV8wIDwtIG1lYW4odGVtb2luX1QwKTsgbW95XzEgPC0gbWVhbih0ZXN0X1QxKVxuc2RfMCAgPC0gc2QodGVtb2luX1QwKTsgICBzZF8xICA8LSBzZCh0ZXN0X1QxKVxuc2RfcG9vbGVkIDwtIHNxcnQoKChzZF8wXjIpICsgKHNkXzFeMikpIC8gMilcbmRfY29oZW4gICA8LSAobW95XzEgLSBtb3lfMCkgLyBzZF9wb29sZWRcbmNhdChcIlxcblRhaWxsZSBkZSBsJ2VmZmV0IChkIGRlIENvaGVuKSA6XCIsIHJvdW5kKGRfY29oZW4sIDMpLCBcIlxcblwiKSJ9
+</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Analyse Critique de la Sortie R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>La statistique</strong> <span class="math inline">\(t\)</span> : Indique à combien d’écarts-types de l’hypothèse nulle se situe votre échantillon. Ici, la valeur est élevée.</li>
+<li><strong>L’intervalle de confiance :</strong> <code>95 percent confidence interval</code> encadre la différence réelle de rendement. Si cet intervalle contient la valeur zéro, le test ne peut jamais être significatif.</li>
+<li><strong>Le</strong> <span class="math inline">\(d\)</span> de Cohen : Un effet est considéré comme faible autour de 0,2, moyen autour de 0,5, et grand s’il dépasse 0,8. Un <span class="math inline">\(d &gt; 3\)</span> montre un effet biologique massif.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="guide-dintégration-dans-votre-rédaction" class="level3">
+<h3 class="anchored" data-anchor-id="guide-dintégration-dans-votre-rédaction">Guide d’intégration dans votre Rédaction</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">❌ Version Floue / Rejetée</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">✅ Version Rigoureuse / Acceptée</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<blockquote class="blockquote">
+<p>« Le rendement du traitement T1 est supérieur à celui du témoin T0. Le test de Student donne un p inférieur à 0,05, ce qui prouve que notre nouvelle méthode de pré-culture fonctionne parfaitement bien à l’échelle industrielle. » * <strong>Critique :</strong> Manque d’indicateurs descriptifs (moyenne, dispersion), absence des degrés de liberté, formulation subjective (“parfaitement bien”) et pas d’encadrement de l’incertitude.</p>
+</blockquote>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<blockquote class="blockquote">
+<p>« Le rendement moyen en bioéthanol est significativement plus élevé avec le protocole de pré-culture <span class="math inline">\(T_1\)</span> (<span class="math inline">\(M = 0,453\text{ g/g}\)</span>, <span class="math inline">\(SD = 0,013\)</span>, <span class="math inline">\(n = 12\)</span>) qu’avec le témoin industriel <span class="math inline">\(T_0\)</span> (<span class="math inline">\(M = 0,408\text{ g/g}\)</span>, <span class="math inline">\(SD = 0,015\)</span>, <span class="math inline">\(n = 12\)</span>), selon un test <span class="math inline">\(t\)</span> de Student pour échantillons indépendants, <span class="math inline">\(t(22) = 7,65\)</span>, <span class="math inline">\(p &lt; 0,001\)</span>. La taille de l’effet est jugée majeure (<span class="math inline">\(d\)</span> de Cohen = 3,12). De plus, l’intervalle de confiance à 95% indique que le gain de rendement moyen se situe entre <span class="math inline">\(0,033\text{ g/g}\)</span> et <span class="math inline">\(0,057\text{ g/g}\)</span>, confirmant la pertinence économique du procédé à grande échelle. »</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="part-3-cas-pratique-2---anova-multiplicité-et-lettres-compactes-cld" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-cas-pratique-2---anova-multiplicité-et-lettres-compactes-cld">Part 3 : Cas Pratique 2 - ANOVA, Multiplicité et Lettres Compactes (CLD)</h2>
+<section id="contexte-industriel-1" class="level3">
+<h3 class="anchored" data-anchor-id="contexte-industriel-1">Contexte Industriel</h3>
+<p>Dans le cadre du criblage de sources nutritives pour la production de pénicilline par <em>Penicillium chrysogenum</em>, vous testez l’influence de 4 sources de carbone différentes (Glucose, Lactose, Sucrose, Glycérol) sur la concentration finale en antibiotique (<span class="math inline">\(mg/L\)</span>) après 120 heures de fermentation en fiole agitée (<span class="math inline">\(n = 5\)</span> réplicats biologiques par groupe).</p>
+</section>
+<section id="script-interactif-avancé-webr" class="level3">
+<h3 class="anchored" data-anchor-id="script-interactif-avancé-webr">Script Interactif Avancé (WebR)</h3>
+<p>Exécutez ce script pour calculer l’ANOVA, générer la matrice des comparaisons multiples de Tukey, extraire les groupes de lettres compactes et tracer le graphique de publication ajusté.</p>
+<div class="cell" data-edit="true">
+<div>
+<div id="webr-2" class="exercise-cell">
+
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyAxLiBDaGFyZ2VtZW50IGRlcyBwYWNrYWdlcyBjaGFyZ8OpcyBkYW5zIGxlIG1vdGV1ciBXZWJSXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KG11bHRjb21wVmlldylcbmxpYnJhcnkoZHBseXIpXG5cbiMgMi4gU3RydWN0dXJhdGlvbiBkdSBqZXUgZGUgZG9ubsOpZXMgZGUgcHJvZHVjdGlvbiAobWcvTClcbmRvbm5lZXNfYW50aWJpbyA8LSBkYXRhLmZyYW1lKFxuICBDYXJib25lID0gZmFjdG9yKHJlcChjKFwiR2x1Y29zZVwiLCBcIkxhY3Rvc2VcIiwgXCJTdWNyb3NlXCIsIFwiR2x5Y2Vyb2xcIiksIGVhY2ggPSA1KSksXG4gIFRpdHJlID0gYygxMjAsIDEyNSwgMTE4LCAxMjIsIDEyMSwgICMgR2x1Y29zZVxuICAgICAgICAgICAgMjEwLCAyMTUsIDIwOCwgMjEyLCAyMTQsICAjIExhY3Rvc2VcbiAgICAgICAgICAgIDE0NSwgMTUwLCAxNDIsIDE0OCwgMTQ2LCAgIyBTdWNyb3NlXG4gICAgICAgICAgICA5NSwgIDk4LCAgOTIsICA5NiwgIDk0KSAgICMgR2x5Y8Opcm9sXG4pXG5cbiMgMy4gQ2FsY3VsIGRlIGwnQU5PVkEgdW5pZGlyZWN0aW9ubmVsbGVcbmZpdF9hbm92YSA8LSBhb3YoVGl0cmUgfiBDYXJib25lLCBkYXRhID0gZG9ubmVlc19hbnRpYmlvKVxuY2F0KFwiLS0tIDEuIFRBQkxFQVUgUsOJU1VNw4kgREUgTCdBTk9WQSAtLS1cXG5cIilcbnByaW50KHN1bW1hcnkoZml0X2Fub3ZhKSlcbmNhdChcIlxcblwiKVxuXG4jIDQuIFRlc3QgUG9zdC1Ib2MgZGUgVHVrZXkgSFNEIChBanVzdGVtZW50IHBvdXIgY29tcGFyYWlzb25zIG11bHRpcGxlcylcbnRlc3RfdHVrZXkgPC0gVHVrZXlIU0QoZml0X2Fub3ZhKVxuY2F0KFwiLS0tIDIuIENPTVBBUkFJU09OUyBBUFBBUknDiUVTIERFIFRVS0VZIChwLXZhbHVlcyBhanVzdMOpZXMpIC0tLVxcblwiKVxucHJpbnQodGVzdF90dWtleSlcbmNhdChcIlxcblwiKVxuXG4jIDUuIEV4dHJhY3Rpb24gc8OpY3VyaXPDqWUgZGVzIGxldHRyZXMgY29tcGFjdGVzIChDTEQpIHNhbnMgb3DDqXJhdGV1ciBkb2xsYXJcbmxldHRyZXNfYnJ1dGVzIDwtIG11bHRjb21wTGV0dGVyczQoZml0X2Fub3ZhLCB0ZXN0X3R1a2V5KVxudmVjdGV1cl9jbGQgICAgPC0gbGV0dHJlc19icnV0ZXNbW1wiQ2FyYm9uZVwiXV1bW1wiTGV0dGVyc1wiXV1cblxuZGZfbGV0dHJlcyA8LSBkYXRhLmZyYW1lKFxuICBDYXJib25lID0gbmFtZXModmVjdGV1cl92ZWN0ZXVyIDwtIHZlY3RldXJfY2xkKSxcbiAgTGV0dHJlICA9IGFzLmNoYXJhY3Rlcih2ZWN0ZXVyX3ZlY3RldXIpXG4pXG5cbiMgNi4gU3ludGjDqHNlIGRlcyBzdGF0aXN0aXF1ZXMgZGVzY3JpcHRpdmVzXG5iaWxhbl9zdGF0cyA8LSBkb25uZWVzX2FudGliaW8gfD4gXG4gIGdyb3VwX2J5KENhcmJvbmUpIHw+IFxuICBzdW1tYXJpc2UoXG4gICAgTW95ZW5uZSA9IG1lYW4oVGl0cmUpLFxuICAgIFNEID0gc2QoVGl0cmUpXG4gICkgfD4gXG4gIGxlZnRfam9pbihkZl9sZXR0cmVzLCBieSA9IFwiQ2FyYm9uZVwiKVxuXG5jYXQoXCItLS0gMy4gU1lOVEjDiFNFIERFUyBHUk9VUEVTIFBPVVIgUkVQT1JUSU5HIC0tLVxcblwiKVxucHJpbnQoYmlsYW5fc3RhdHMpXG5cbiMgNy4gQ29uc3RydWN0aW9uIGR1IGdyYXBoaXF1ZSBkZSBwdWJsaWNhdGlvblxuZ2dwbG90KGJpbGFuX3N0YXRzLCBhZXMoeCA9IENhcmJvbmUsIHkgPSBNb3llbm5lLCBmaWxsID0gQ2FyYm9uZSkpICtcbiAgZ2VvbV9iYXIoc3RhdCA9IFwiaWRlbnRpdHlcIiwgY29sb3IgPSBcImJsYWNrXCIsIHdpZHRoID0gMC41NSwgc2hvdy5sZWdlbmQgPSBGQUxTRSkgK1xuICBnZW9tX2Vycm9yYmFyKGFlcyh5bWluID0gTW95ZW5uZSAtIFNELCB5bWF4ID0gTW95ZW5uZSArIFNEKSwgd2lkdGggPSAwLjIsIGNvbG9yID0gXCJibGFja1wiKSArXG4gIGdlb21fdGV4dChhZXMobGFiZWwgPSBMZXR0cmUsIHkgPSBNb3llbm5lICsgU0QgKyA1KSwgdmp1c3QgPSAwLCBmb250ZmFjZSA9IFwiYm9sZFwiLCBzaXplID0gNSwgY29sb3IgPSBcImRhcmtyZWRcIikgK1xuICBsYWJzKFxuICAgIHggPSBcIlNvdXJjZSBkZSBjYXJib25lXCIsXG4gICAgeSA9IFwiVGl0cmUgZW4gUMOpbmljaWxsaW5lIChtZy9MKVwiLFxuICAgIHRpdGxlID0gXCJDcmlibGFnZSBkZSBzb3VyY2VzIGRlIGNhcmJvbmUgcG91ciBsYSBwcm9kdWN0aW9uIGRlIFDDqW5pY2lsbGluZVwiLFxuICAgIHN1YnRpdGxlID0gXCJMZXMgYmFycmVzIHJlcHLDqXNlbnRlbnQgbGEgbW95ZW5uZSDCsSDDqWNhcnQtdHlwZSAobiA9IDUpLiBMZXMgbGV0dHJlcyBkaWZmw6lyZW50ZXMgaW5kaXF1ZW50IGRlcyBncm91cGVzIHNpZ25pZmljYXRpdmVtZW50IGRpc3RpbmN0cyAoVHVrZXkgSFNELCBwIDwgMCwwNSkuXCJcbiAgKSArXG4gIHRoZW1lX2NsYXNzaWMoKSArXG4gIHNjYWxlX2ZpbGxfYnJld2VyKHBhbGV0dGUgPSBcIlBhc3RlbDFcIikgK1xuICB0aGVtZShcbiAgICBwbG90LnRpdGxlID0gZWxlbWVudF90ZXh0KGZhY2UgPSBcImJvbGRcIiwgc2l6ZSA9IDEzKSxcbiAgICBheGlzLnRpdGxlID0gZWxlbWVudF90ZXh0KHNpemUgPSAxMSlcbiAgKSJ9
+</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Remarque sur la gestion de la multiplicité
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pourquoi ne pas faire de simples <em>t-tests</em> successifs entre chaque paire ? Tester 4 sources de carbone implique <span class="math inline">\(4 \times 3 / 2 = 6\)</span> comparaisons différentes. Si vous appliquez un seuil <span class="math inline">\(\alpha = 0,05\)</span> à chaque test, le risque global de commettre au moins une erreur de type I (faux positif) grimpe à <span class="math inline">\(1 - (1 - 0,05)^6 \approx 26,5\%\)</span>. Le test de <strong>Tukey HSD</strong> ajuste automatiquement les p-values pour maintenir ce risque global strictement à 5%.</p>
+</div>
+</div>
+</section>
+<section id="guide-dintégration-dans-votre-rédaction-1" class="level3">
+<h3 class="anchored" data-anchor-id="guide-dintégration-dans-votre-rédaction-1">Guide d’intégration dans votre Rédaction</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">❌ Version Floue / Rejetée</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">✅ Version Rigoureuse / Acceptée</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<blockquote class="blockquote">
+<p>« Les différentes sources de carbone influencent la synthèse de pénicilline de manière significative d’après notre ANOVA (<span class="math inline">\(p &lt; 0.05\)</span>). Comme on peut le voir sur la figure, le lactose est la meilleure source de carbone et le glycérol est la moins bonne. Le sucrose et le glucose donnent également des résultats différents. » * <strong>Critique :</strong> Manque d’indices de test (<span class="math inline">\(F\)</span>), omission des valeurs descriptives clés du modèle, absence de précision sur les groupes définis par les lettres compactes.</p>
+</blockquote>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+
+</div>
+</div>
+</div>
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC42LjAvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImdncGxvdDIiLCJtdWx0Y29tcFZpZXciLCJkcGx5ciJdLCJyZXBvcyI6W119LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0yIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8yO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzIgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8yID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8yLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl8xID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfMSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMSwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IndlYlJPanMgPSB7XG4gIGNvbnN0IHsgV2ViUiwgQ2hhbm5lbFR5cGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWUuV2ViUjtcbiAgY29uc3Qge1xuICAgIFdlYlJFdmFsdWF0b3IsXG4gICAgV2ViUkVudmlyb25tZW50TWFuYWdlcixcbiAgICBzZXR1cFIsXG4gICAgYjY0RGVjb2RlLFxuICAgIGNvbGxhcHNlUGF0aFxuICB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcblxuICBjb25zdCBzdGF0dXNDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctc3RhdHVzXCIpO1xuICBjb25zdCBpbmRpY2F0b3JDb250YWluZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChcImV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpbmRpY2F0b3JDb250YWluZXIuY2xhc3NMaXN0LnJlbW92ZShcImQtbm9uZVwiKTtcblxuICBsZXQgc3RhdHVzVGV4dCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIilcbiAgc3RhdHVzVGV4dC5jbGFzc0xpc3QgPSBcImV4ZXJjaXNlLWxvYWRpbmctZGV0YWlsc1wiO1xuICBzdGF0dXNUZXh0ID0gc3RhdHVzQ29udGFpbmVyLmFwcGVuZENoaWxkKHN0YXR1c1RleHQpO1xuICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYEluaXRpYWxpc2VgO1xuXG4gIC8vIEhvaXN0IGluZGljYXRvciBvdXQgZnJvbSBmaW5hbCBzbGlkZSB3aGVuIHJ1bm5pbmcgdW5kZXIgcmV2ZWFsXG4gIGNvbnN0IHJldmVhbFN0YXR1cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsIC5leGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaWYgKHJldmVhbFN0YXR1cykge1xuICAgIHJldmVhbFN0YXR1cy5yZW1vdmUoKTtcbiAgICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCA+IC5zbGlkZXNcIikuYXBwZW5kQ2hpbGQocmV2ZWFsU3RhdHVzKTtcbiAgfVxuXG4gIC8vIE1ha2UgYW55IHJldmVhbCBzbGlkZXMgd2l0aCBsaXZlIGNlbGxzIHNjcm9sbGFibGVcbiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcIi5yZXZlYWwgLmV4ZXJjaXNlLWNlbGxcIikuZm9yRWFjaCgoZWwpID0+IHtcbiAgICBlbC5jbG9zZXN0KCdzZWN0aW9uLnNsaWRlJykuY2xhc3NMaXN0LmFkZChcInNjcm9sbGFibGVcIik7XG4gIH0pXG5cbiAgLy8gd2ViUiBzdXBwbGVtZW50YWwgZGF0YSBhbmQgb3B0aW9uc1xuICBjb25zdCBkYXRhQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLWRhdGFcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBkYXRhID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZGF0YUNvbnRlbnQpKTtcblxuICAvLyBHcmFiIGxpc3Qgb2YgcmVzb3VyY2VzIHRvIGJlIGRvd25sb2FkZWRcbiAgY29uc3QgZmlsZXNDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInZmcy1maWxlXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZmlsZXMgPSBKU09OLnBhcnNlKGI2NERlY29kZShmaWxlc0NvbnRlbnQpKTtcblxuICAvLyBJbml0aWFsaXNlIHdlYlIgYW5kIHNldHVwIGZvciBSIGNvZGUgZXZhbHVhdGlvblxuICBsZXQgd2ViUlByb21pc2UgPSAoYXN5bmMgKHdlYlIpID0+IHtcbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHdlYlJgO1xuICAgIGF3YWl0IHdlYlIuaW5pdCgpO1xuXG4gICAgLy8gSW5zdGFsbCBwcm92aWRlZCBsaXN0IG9mIHBhY2thZ2VzXG4gICAgLy8gRW5zdXJlIHdlYlIgZGVmYXVsdCByZXBvIGlzIGluY2x1ZGVkXG4gICAgZGF0YS5wYWNrYWdlcy5yZXBvcy5wdXNoKFwiaHR0cHM6Ly9yZXBvLnItd2FzbS5vcmdcIilcbiAgICBhd2FpdCBkYXRhLnBhY2thZ2VzLnBrZ3MubWFwKChwa2cpID0+ICgpID0+IHtcbiAgICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgRG93bmxvYWRpbmcgcGFja2FnZTogJHtwa2d9YDtcbiAgICAgIHJldHVybiB3ZWJSLmV2YWxSVm9pZChgXG4gICAgICAgIHdlYnI6Omluc3RhbGwocGtnLCByZXBvcyA9IHJlcG9zKVxuICAgICAgICBsaWJyYXJ5KHBrZywgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKVxuICAgICAgYCwgeyBlbnY6IHtcbiAgICAgICAgcGtnOiBwa2csXG4gICAgICAgIHJlcG9zOiBkYXRhLnBhY2thZ2VzLnJlcG9zLFxuICAgICAgfX0pO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgLy8gRG93bmxvYWQgYW5kIGluc3RhbGwgcmVzb3VyY2VzXG4gICAgYXdhaXQgZmlsZXMubWFwKChmaWxlKSA9PiBhc3luYyAoKSA9PiB7XG4gICAgICBjb25zdCBuYW1lID0gZmlsZS5zdWJzdHJpbmcoZmlsZS5sYXN0SW5kZXhPZignLycpICsgMSk7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHJlc291cmNlOiAke25hbWV9YDtcbiAgICAgIGNvbnN0IHJlc3BvbnNlID0gYXdhaXQgZmV0Y2goZmlsZSk7XG4gICAgICBpZiAoIXJlc3BvbnNlLm9rKSB7XG4gICAgICAgIHRocm93IG5ldyBFcnJvcihgQ2FuJ3QgZG93bmxvYWQgXFxgJHtmaWxlfVxcYC4gRXJyb3IgJHtyZXNwb25zZS5zdGF0dXN9OiBcIiR7cmVzcG9uc2Uuc3RhdHVzVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXNwb25zZS5hcnJheUJ1ZmZlcigpO1xuXG4gICAgICAvLyBTdG9yZSBVUkxzIGluIHRoZSBjd2Qgd2l0aG91dCBhbnkgc3ViZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgaWYgKGZpbGUuaW5jbHVkZXMoXCI6Ly9cIikpIHtcbiAgICAgICAgZmlsZSA9IG5hbWU7XG4gICAgICB9XG5cbiAgICAgIC8vIENvbGxhcHNlIGhpZ2hlciBkaXJlY3Rvcnkgc3RydWN0dXJlXG4gICAgICBmaWxlID0gY29sbGFwc2VQYXRoKGZpbGUpO1xuXG4gICAgICAvLyBDcmVhdGUgZGlyZWN0b3J5IHRyZWUsIGlnbm9yaW5nIFwiZGlyZWN0b3J5IGV4aXN0c1wiIFZGUyBlcnJvcnNcbiAgICAgIGNvbnN0IHBhcnRzID0gZmlsZS5zcGxpdCgnLycpLnNsaWNlKDAsIC0xKTtcbiAgICAgIGxldCBwYXRoID0gJyc7XG4gICAgICB3aGlsZSAocGFydHMubGVuZ3RoID4gMCkge1xuICAgICAgICBwYXRoICs9IHBhcnRzLnNoaWZ0KCkgKyAnLyc7XG4gICAgICAgIGNvbnN0IGFuYWx5c2lzID0gYXdhaXQgd2ViUi5GUy5hbmFseXplUGF0aChwYXRoKTtcbiAgICAgICAgaWYgKCFhbmFseXNpcy5leGlzdHMpIHtcbiAgICAgICAgICB0cnkge1xuICAgICAgICAgICAgYXdhaXQgd2ViUi5GUy5ta2RpcihwYXRoKTtcbiAgICAgICAgICB9IGNhdGNoIChlKSB7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3I6IFwiJHtlLm1lc3NhZ2V9XCIuYCk7XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG5cbiAgICAgIC8vIFdyaXRlIHRoaXMgZmlsZSB0byB0aGUgVkZTXG4gICAgICByZXR1cm4gYXdhaXQgd2ViUi5GUy53cml0ZUZpbGUoZmlsZSwgbmV3IFVpbnQ4QXJyYXkoZGF0YSkpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbnN0YWxsaW5nIHdlYlIgc2hpbXNgO1xuICAgIGF3YWl0IHdlYlIuZXZhbFJWb2lkKGB3ZWJyOjpzaGltX2luc3RhbGwoKWApO1xuXG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBXZWJSIGVudmlyb25tZW50IHNldHVwYDtcbiAgICBhd2FpdCBzZXR1cFIod2ViUiwgZGF0YSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gd2ViUjtcbiAgfSkobmV3IFdlYlIoZGF0YS5vcHRpb25zKSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHdlYlIgPSBhd2FpdCB3ZWJSUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgV2ViUkV2YWx1YXRvcih3ZWJSLCBjb250ZXh0KVxuICAgIGF3YWl0IGV2YWx1YXRvci5wcm9jZXNzKGlucHV0cyk7XG4gICAgcmV0dXJuIGV2YWx1YXRvci5jb250YWluZXI7XG4gIH1cblxuICByZXR1cm4ge1xuICAgIHByb2Nlc3MsXG4gICAgd2ViUlByb21pc2UsXG4gICAgcmVuZGVyZWRPanMsXG4gIH07XG59XG4ifV19
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../..";
+window._ojs.paths.runtimeToRoot = "../../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
